@@ -15,7 +15,7 @@ def get_uniq_id():
 
 def get_public_ip():
     response = requests.get('https://ifconfig.co/json')
-    assert requests.status_codes == 200
+    assert response.status_code == 200
     response_content = response.json()
     assert 'ip' in response_content
     return response_content['ip']
