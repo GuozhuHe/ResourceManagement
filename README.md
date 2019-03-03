@@ -2,7 +2,7 @@
 
 ## 简介
 
-`ResourceManagement`是一个资源管理申请系统，目前支持 MySQL、Redis 实例的申请，实例运行在 Docker 里面。本系统以 RESTful API 接口的形式与外界交互。
+`ResourceManagement`是一个资源管理系统，目前支持 MySQL、Redis 实例的申请，实例运行在 Docker 里面。本系统以 RESTful API 接口的形式与外界进行交互。
 
 ## 快速开始
 
@@ -16,8 +16,8 @@
     * `ENV == dev`时，为开发环境。具体表现为修改代码后服务会自动重启，错误的返回信息更加详细
         ```json
         {
-            "code": 500,
             "error": {
+                "code": 500,
                 "message": "Internal Server Error",
                 "traceback": [
                     "Traceback (most recent call last):",
@@ -77,12 +77,12 @@ env/bin/web
     * `resource_type`: 资源类型，目前有 redis, mysql
     * `resource_name`: 资源名称，唯一
     * 例子:
-      * 查看 redis 实例信息:  ```/api/resources/mysql/r11```
-      * 查看 mysql 实例信息: ```/api/resources/redis/m12```
+      * 查看 mysql 实例信息:  ```/api/resources/mysql/m11```
+      * 查看 redis 实例信息: ```/api/resources/redis/r12```
 
 #### Response
 ```
-# get /api/resources/redis/m12
+# get /api/resources/redis/r32
 # return:
 {
     # ID, 唯一
@@ -110,7 +110,7 @@ env/bin/web
 {
     "error": {
         "code": 404,
-        "message": "Not such resource(mysql:m23)"
+        "message": "Not such resource(redis:m23)"
     }
 }
 ```
@@ -129,7 +129,7 @@ env/bin/web
         * `appendonly`: 是否使用 AOF 持久化，默认为`yes`
         * `appendfilename`: AOF 持久化的文件名，默认为`appendonly.aof`
   
-> 注意：由于这些配置项的值很多，校验规则较为麻烦，加上没有找到现成的可以检查 mysql 或 redis 配置是否正确的库，所以暂时不做参数的检验，传入错误的配置参数时，会导致资源创建失败
+> 注意：由于这些配置项的值很多，编写校验规则较为耗时和麻烦，加上没有找到现成的可以检查 mysql 或 redis 配置文件是否正确的库，所以暂时不做参数的检验，传入错误的配置参数时，会导致资源创建失败
 
 #### Response
 ```
@@ -177,7 +177,7 @@ A: 放到 Docker 上，容器化运行。
 
 A: 创建资源时，首先会创建一个`/docker_data/{resource_type}/{resource_name}/data`目录作为数据卷，然后在创建容器时，把该目录挂载到容器相应存储数据的目录即可(例如 mysql 在容器中存储数据的目录是`/var/lib/mysql`，就可以让服务器的 `/docker_data/{resource_type}/{resource_name}/data` 挂载到容器中的 `/var/lib/mysql`)
 
-**Q: 怎么实现配置自定义**
+**Q: 怎么实现配置自定义？**
 
 A: 预先写好配置文件的模板，然后在创建资源时，根据已有的配置模板和传进来的配置项，生成配置文件到指定的目录(例如mysql的为`/docker_data/{resource_type}/{resource_name}/my.cnf`), 然后把该文件挂载到容器即可。
 
