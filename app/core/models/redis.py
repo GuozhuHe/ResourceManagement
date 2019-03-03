@@ -1,8 +1,8 @@
 # coding=utf-8
 from app.utils import get_line_from_file
 from app.core.models.base import BaseContainer
-from app.constants import (REDIS_DATA_PATH, REDIS_CONFIG_PATH, LOCAL_IP, REDIS_CONFIG_TEMPLATE,
-                           REDIS_CONTAINER_DATA_PATH, REDIS_CONTAINER_CONFIG_PATH, DockerImage, DockerVolumeMode)
+from app.constants import (REDIS_DATA_PATH, REDIS_CONFIG_PATH, REDIS_CONFIG_TEMPLATE, REDIS_CONTAINER_DATA_PATH,
+                           REDIS_CONTAINER_CONFIG_PATH, DockerImage, DockerVolumeMode)
 
 
 class RedisContainer(BaseContainer):
@@ -38,7 +38,7 @@ class RedisContainer(BaseContainer):
     @property
     def connection_url(self):
         return "redis-cli -h {host} -p {port} -a {password}".format(
-            host=LOCAL_IP,
+            host=self.ip,
             port=self.exposed_port,
             password=self.password
         )
@@ -54,7 +54,7 @@ class RedisContainer(BaseContainer):
         return {
             'resource_id': self._container.id,
             'resource_name': self._container.name,
-            'server_ip': LOCAL_IP,
+            'server_ip': self.ip,
             'exposed_port': self.exposed_port,
             'db_password': self.password,
             'platform': self._container.attrs['Platform'],

@@ -50,12 +50,10 @@ class ResourcesHandlerTestCase(BaseWebTestCase):
 
     @mock.patch('app.http.handlers.resource.RedisContainer')
     def test_post_when_error(self, mock_container):
-        # unsupported resource type
         response = self.post(url='/api/resources/mongodb')
         self.assertEqual(response.code, 400)
         self.assertEqual(json_decode(response.body)["error"]["message"], "Unsupported resource type(mongodb)")
 
-        # Not such resource
         mock_container.create.return_value = None
         response = self.post(url='/api/resources/redis')
         self.assertEqual(response.code, 500)

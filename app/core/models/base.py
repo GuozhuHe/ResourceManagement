@@ -4,7 +4,7 @@ import docker
 from docker.models.containers import Container
 from docker.errors import NotFound
 
-from app.utils import list_to_dict
+from app.utils import (list_to_dict, get_public_ip)
 from app.constants import (DOCKER_SERVER_PATH, DockerVolumeMode)
 
 docker_client = docker.DockerClient(base_url=DOCKER_SERVER_PATH)
@@ -12,6 +12,7 @@ docker_client = docker.DockerClient(base_url=DOCKER_SERVER_PATH)
 
 class BaseContainer(object):
     client = docker_client
+    ip = get_public_ip()
     port = None
     image = None
 

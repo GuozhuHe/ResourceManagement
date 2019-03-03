@@ -1,14 +1,14 @@
 # coding=utf-8
 import os
 
-from app.utils import get_host_ip
-
-LOCAL_IP = get_host_ip()
 IS_DEBUG = (os.environ.get('ENV', 'dev') == 'dev')
 PROJECT_ROOT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir))
 
+REDIS_HOST = os.environ.get('REDIS_HOST', 'localhost')
+REDIS_PORT = os.environ.get('REDIS_PORT', '6379')
+
 # docker config
-DOCKER_SERVER_PATH = 'unix://var/run/docker.sock'
+DOCKER_SERVER_PATH = os.environ.get('DOCKER_PATH', 'unix://var/run/docker.sock')
 
 MYSQL_DATA_PATH = os.path.join(PROJECT_ROOT_DIR, 'docker_data', 'mysql', '{name}', 'data')
 MYSQL_CONFIG_PATH = os.path.join(PROJECT_ROOT_DIR, 'docker_data', 'mysql', '{name}', 'my.cnf')

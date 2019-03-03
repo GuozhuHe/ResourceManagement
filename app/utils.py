@@ -1,12 +1,11 @@
 # coding=utf-8
-import os
 import redis
 import random
-import socket
 import string
+import requests
 
-REDIS_HOST = os.environ.get('REDIS_HOST', 'localhost')
-REDIS_PORT = os.environ.get('REDIS_PORT', '6379')
+from app.constants import (REDIS_PORT, REDIS_HOST)
+
 redis_instance = redis.Redis(host=REDIS_HOST, port=REDIS_PORT)
 
 
@@ -14,15 +13,12 @@ def get_uniq_id():
     return redis_instance.incr('db_counter')
 
 
-def get_host_ip():
-    try:
-        socket_instance = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        socket_instance.connect(('8.8.8.8', 80))
-        ip = socket_instance.getsockname()[0]
-    finally:
-        socket_instance.close()
-
-    return ip
+def get_public_ip():
+    response = requests.get('https://ifconfig.co/json')
+    assert requests.status_codes == 200
+    response_content = response.json()
+    assert 'ip' in response_content
+    return response_content['ip']
 
 
 def list_to_dict(l):
@@ -46,4 +42,4 @@ def get_line_from_file(file_path, startswith):
 
 
 def get_random_string(length=8):
-    return ''.join(random.choices(string.ascii_letters + string.digits, k=length))
+    return ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(length))

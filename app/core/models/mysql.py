@@ -1,7 +1,7 @@
 # coding=utf-8
 from app.core.models.base import BaseContainer
-from app.constants import (MYSQL_CONFIG_PATH, MYSQL_DATA_PATH, LOCAL_IP, MYSQL_CONFIG_TEMPLATE,
-                           MYSQL_CONTAINER_DATA_PATH, MYSQL_CONTAINER_CONFIG_PATH, DockerImage, DockerVolumeMode)
+from app.constants import (MYSQL_CONFIG_PATH, MYSQL_DATA_PATH, MYSQL_CONFIG_TEMPLATE, MYSQL_CONTAINER_DATA_PATH,
+                           MYSQL_CONTAINER_CONFIG_PATH, DockerImage, DockerVolumeMode)
 
 
 class MySQLContainer(BaseContainer):
@@ -43,7 +43,7 @@ class MySQLContainer(BaseContainer):
         return "mysql -h {host} -P {port} -u {username} -D {db_name} -p{password}". \
             format(username=self.env['MYSQL_USER'],
                    password=self.env['MYSQL_PASSWORD'],
-                   host=LOCAL_IP,
+                   host=self.ip,
                    port=self.exposed_port,
                    db_name=self.env['MYSQL_DATABASE'])
 
@@ -53,7 +53,7 @@ class MySQLContainer(BaseContainer):
         return {
             'resource_id': self._container.id,
             'resource_name': self._container.name,
-            'server_ip': LOCAL_IP,
+            'server_ip': self.ip,
             'exposed_port': self.exposed_port,
             'db_name': self.env['MYSQL_DATABASE'],
             'db_username': self.env['MYSQL_USER'],
