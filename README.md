@@ -13,7 +13,7 @@
   * `REDIS_HOST`，redis 的地址，默认为`localhost`
   * `REDIS_PORT`，redis 的端口，默认为`6379`
   * `ENV`，当前所处的开发环境，默认为`dev`
-    * `ENV == dev`时，为开发环境。具体表现为修改代码后服务会自动重启，错误的返回信息更加详细
+    * `ENV == dev`时，为开发环境。具体表现为修改代码后服务会自动重启，发生异常时的返回信息更加详细
         ```json
         {
             "error": {
@@ -24,7 +24,7 @@
                     "File '/root/apps/ResourceManagement/env/lib/python3.5/site-packages/tornado/web.py'," ,
                     "line 1510, in _execute: result = method(*self.path_args, **self.path_kwargs)",
                     "TypeError: get() missing 1 required positional argument: 'resource_name'"
-                ],
+                ]
             }
         }
         ```
@@ -161,11 +161,10 @@ env/bin/web
 {
     "error": {
         "code": 500,
-        "message": ""Failed to create resource, check your parameters(maybe your parameter is wrong)"
+        "message": "Failed to create resource, check your parameters(maybe your parameter is wrong)"
     }
 }
 ```
-
   
 ## Q&A
 
@@ -184,3 +183,6 @@ A: 预先写好配置文件的模板，然后在创建资源时，根据已有�
 **Q: 怎么保证资源名(resource_name)唯一？**
 
 A: 用 redis 的 incr 来实现唯一ID的发放。
+
+
+> 为了方便申请资源，服务已部署到云服务器上，可直接通过 http://119.23.223.90:9000 管理资源，例如使用 post http://119.23.223.90:9000/api/resources/mysql 可申请 mysql 资源
