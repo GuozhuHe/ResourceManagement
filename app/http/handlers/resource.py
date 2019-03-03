@@ -1,7 +1,7 @@
 # coding: utf-8
 
 from app.http.handlers.base import BaseHandler
-from app.utils import get_uniq_id, get_random_string
+from app.utils import (get_uniq_id, get_random_string)
 from app.core.models import (MySQLContainer, RedisContainer)
 from app.exceptions import (UnsupportedTypeHTTPError, ResourceNotFoundHTTPError, CreateResourceHTTPError)
 
@@ -14,7 +14,7 @@ class ResourceHandler(BaseHandler):
             'redis': RedisContainer
         }
         if resource_type.lower() not in support_resource.keys():
-            raise UnsupportedTypeHTTPError(reason='Unsupported resource type({type})'.format(type=source_type))
+            raise UnsupportedTypeHTTPError(reason='Unsupported resource type({type})'.format(type=resource_type))
 
         resource = support_resource[resource_type].get(resource_name)
         if not resource or resource.status == 'exited':

@@ -16,7 +16,6 @@ setup(
     author='heguozhu',
     author_email='heguozhuchn@gmail.com',
     description='Storage resource(MySQL, Redis) management system',
-    zip_safe=False,
     install_requires=all_requirements,
     entry_points={
         'console_scripts': [

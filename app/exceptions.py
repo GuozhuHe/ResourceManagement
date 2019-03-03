@@ -1,7 +1,7 @@
 # coding=utf-8
 from tornado.web import HTTPError
 
-__all__ = ['ContainerException', 'UnsupportedTypeHTTPError', 'ResourceNotFoundHTTPError', 'CreateResourceHTTPError']
+__all__ = ['UnsupportedTypeHTTPError', 'ResourceNotFoundHTTPError', 'CreateResourceHTTPError']
 
 
 class BaseHTTPError(HTTPError):
@@ -28,8 +28,4 @@ class ResourceNotFoundHTTPError(BaseHTTPError):
 
 class CreateResourceHTTPError(BaseHTTPError):
     STATUS_CODE = 500
-    REASON = u'Failed to create resource, check your parameters(maybe your parameter format is wrong.)'
-
-
-class ContainerException(Exception):
-    pass
+    REASON = u'Failed to create resource, check your parameters(maybe your parameter format is wrong)'

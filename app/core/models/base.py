@@ -5,7 +5,6 @@ from docker.models.containers import Container
 from docker.errors import NotFound
 
 from app.utils import list_to_dict
-from app.exceptions import ContainerException
 from app.constants import (DOCKER_SERVER_PATH, DockerVolumeMode)
 
 docker_client = docker.DockerClient(base_url=DOCKER_SERVER_PATH)
@@ -26,9 +25,9 @@ class BaseContainer(object):
         raise NotImplementedError
 
     @classmethod
-    def get(cls, short_id):
+    def get(cls, container_id):
         try:
-            container = cls.client.containers.get(container_id=short_id)
+            container = cls.client.containers.get(container_id=container_id)
             if cls.is_same_type_image(cls.image, container.attrs['Config']['Image']):
                 return cls(container)
         except NotFound:
@@ -36,7 +35,7 @@ class BaseContainer(object):
 
     def exec(self, command, *args, **kwargs):
         if not self._container:
-            raise ContainerException("Container should be started before exec")
+            raise AttributeError("Container should be started before exec")
         return self._container.exec_run(command=command, *args, **kwargs)
 
     @property
