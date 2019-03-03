@@ -77,8 +77,8 @@ env/bin/web
     * `resource_type`: 资源类型，目前有 redis, mysql
     * `resource_name`: 资源名称，唯一
     * 例子:
-      * 查看 mysql 实例信息:  ```/api/resources/mysql/m11```
       * 查看 redis 实例信息: ```/api/resources/redis/r12```
+      * 查看 mysql 实例信息:  ```/api/resources/mysql/m11```
 
 #### Response
 ```
@@ -121,13 +121,14 @@ env/bin/web
 * URL:  `/api/resources/{resource_type}`
     * `resource_type`: 资源类型，目前有 redis, mysql
     * 支持自定配置义资源, 只需在请求的 Body 里面附带参数即可:
-      * mysql 支持的参数
-        * `character`:数据库字符集，默认为`utf8`
       * redis 支持的参数
         * `dbfilename`: redis 持久化(全量)的文件名，默认为`dump.rdb`
         * `maxmemory`: 最大内存用量, 默认为`1GB`
         * `appendonly`: 是否使用 AOF 持久化，默认为`yes`
         * `appendfilename`: AOF 持久化的文件名，默认为`appendonly.aof`
+      * mysql 支持的参数
+        * `character`:数据库字符集，默认为`utf8`
+
   
 > 注意：由于这些配置项的值很多，编写校验规则较为耗时和麻烦，加上没有找到现成的可以检查 mysql 或 redis 配置文件是否正确的库，所以暂时不做参数的检验，传入错误的配置参数时，会导致资源创建失败
 
@@ -185,4 +186,4 @@ A: 预先写好配置文件的模板，然后在创建资源时，根据已有�
 A: 用 redis 的 incr 来实现唯一ID的发放。
 
 
-> 为了方便申请资源，服务已部署到云服务器上，可直接通过 http://119.23.223.90:9000 管理资源，例如使用 post http://119.23.223.90:9000/api/resources/mysql 可申请 mysql 资源
+> 为了方便申请资源，服务已部署到云服务器上，可直接通过 http://119.23.223.90:9000 管理资源，例如使用 post http://119.23.223.90:9000/api/resources/redis 可申请 mysql 资源
